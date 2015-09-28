@@ -14,6 +14,7 @@ $uid = 'dropzone' . uniqid();
         {
             uploadMultiple: true,
             url: '<?=View::url('/attribute_multi_file/upload/')?>',
+            acceptedFiles: <?=json_encode($typeValues['fileTypes'])?>,
             success: function (file, response) {
                 $("#session-key-<?=$uid?>").val(response);
             }

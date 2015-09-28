@@ -41,12 +41,19 @@ class Controller extends AttributeTypeController
     public function type_form()
     {
         $typeValues = $this->getTypeValues();
-        $this->set('fileTypes', preg_split('[\|]', $typeValues['fileTypes']));
-        $this->set('availableFileTypes', [
-            'jpg' => t('JPG'),
-            'png' => t('PNG'),
-            'gif' => t('GIF'),
-        ]);
+        $this->set('fileTypes', preg_split('[,]', $typeValues['fileTypes']));
+        $this->set('availableFileTypes', $this->getFileTypes());
+    }
+
+    protected function getFileTypes() {
+        $mimeTypes = \Concrete\Core\File\Service\Mime::$mime_types_and_extensions;
+        $fileTypes = [];
+
+        foreach ($mimeTypes as $extension => $mimeType) {
+            $fileTypes[".{$extension}"] = t($extension);
+        }
+
+        return $fileTypes;
     }
 
     /**
@@ -60,7 +67,7 @@ class Controller extends AttributeTypeController
 
         $db->Replace('atMultiFileSettings', [
             'akID' => $ak->getAttributeKeyID(),
-            'fileTypes' => join('|', $data['fileTypes']),
+            'fileTypes' => join(',', $data['fileTypes']),
         ], ['akID'], true);
     }
 
