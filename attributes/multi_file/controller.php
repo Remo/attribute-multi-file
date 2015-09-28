@@ -30,6 +30,11 @@ class Controller extends AttributeTypeController
         return $value;
     }
 
+    public function getValue()
+    {
+        return $this->getFiles();
+    }
+
     /**
      * Shows the attribute configuration form
      */
@@ -72,15 +77,25 @@ class Controller extends AttributeTypeController
         $this->set('files', $this->getFiles());
     }
 
+    /**
+     * Returns the file set id connected to this attribute instance. Will be null in case the attribute hasn't been
+     * saved yet.
+     * @return int
+     */
     protected function getFileSetID() {
         $db = Database::connection();
         $fsID = $db->GetOne('SELECT fsID FROM atMultiFile WHERE avID = ?', [$this->getAttributeValueID()]);
         return $fsID;
     }
 
+    /**
+     * Returns a list of files connected to the current attribute instance
+     * @return array
+     */
     protected function getFiles() {
         $fsID = $this->getFileSetID();
-        return FileSet::getFilesBySetID($fsID);
+        $files = FileSet::getFilesBySetID($fsID);
+        return $files ?: [];
     }
 
     /**
@@ -123,9 +138,11 @@ class Controller extends AttributeTypeController
             true
         );
 
+        // Import files
         foreach ($files as $file) {
             $fi = new FileImporter();
             $fileVersion = $fi->import($file['fileName'], $file['name']);
+            unlink($file['fileName']);
 
             if ($fileVersion instanceof Version) {
                 $fileSet->addFileToSet($fileVersion);
@@ -137,10 +154,12 @@ class Controller extends AttributeTypeController
                         break;
                     case FileImporter::E_FILE_INVALID:
                         break;
-
                 }
             }
         }
+
+        // Clear session
+        unset($_SESSION['multi_file'][$sessionKey]);
     }
 
     /**
