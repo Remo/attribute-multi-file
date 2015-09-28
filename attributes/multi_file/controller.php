@@ -122,10 +122,6 @@ class Controller extends AttributeTypeController
         $sessionKey = $data['value'];
         $files = $_SESSION['multi_file'][$sessionKey];
 
-        if (!is_array($files)) {
-            return;
-        }
-
         $db = Database::connection();
 
         // create or get file set
@@ -145,22 +141,31 @@ class Controller extends AttributeTypeController
             true
         );
 
-        // Import files
-        foreach ($files as $file) {
-            $fi = new FileImporter();
-            $fileVersion = $fi->import($file['fileName'], $file['name']);
-            unlink($file['fileName']);
+        // Update sort order of files
+        if (isset($data['sortOrder']) && !empty($data['sortOrder'])) {
+            $sortOrder = $data['sortOrder'];
+            parse_str ($sortOrder, $sortOrderArray);
 
-            if ($fileVersion instanceof Version) {
-                $fileSet->addFileToSet($fileVersion);
-            }
-            else {
-                // @TODO now what?
-                switch ($fileVersion) {
-                    case FileImporter::E_FILE_INVALID_EXTENSION:
-                        break;
-                    case FileImporter::E_FILE_INVALID:
-                        break;
+            $fileSet->updateFileSetDisplayOrder($sortOrderArray['file']);
+        }
+
+        // Import files
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                $fi = new FileImporter();
+                $fileVersion = $fi->import($file['fileName'], $file['name']);
+                unlink($file['fileName']);
+
+                if ($fileVersion instanceof Version) {
+                    $fileSet->addFileToSet($fileVersion);
+                } else {
+                    // @TODO now what?
+                    switch ($fileVersion) {
+                        case FileImporter::E_FILE_INVALID_EXTENSION:
+                            break;
+                        case FileImporter::E_FILE_INVALID:
+                            break;
+                    }
                 }
             }
         }

@@ -54,10 +54,14 @@ class Controller extends Package
         $al->register(
             'css', 'dropzone', 'css/dropzone.css', ['position' => \Concrete\Core\Asset\Asset::ASSET_POSITION_FOOTER], $this->pkgHandle
         );
-        $al->registerGroup('dropzone', array(
-            array('javascript', 'dropzone'),
-            array('css', 'dropzone')
-        ));
+        $al->register(
+            'css', 'multifile', 'css/multifile.css', ['position' => \Concrete\Core\Asset\Asset::ASSET_POSITION_FOOTER], $this->pkgHandle
+        );
+        $al->registerGroup('dropzone', [
+            ['javascript', 'dropzone'],
+            ['css', 'dropzone'],
+            ['css', 'multifile'],
+        ]);
 
         Route::register('/attribute_multi_file/upload', '\Concrete\Package\AttributeMultiFile\Src\Uploader::upload');
     }
