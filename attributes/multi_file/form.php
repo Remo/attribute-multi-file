@@ -13,6 +13,10 @@
         <?php } ?>
     </div>
 
+    <div class="dropzone">
+        <div id="preview" class="dropzone-previews"></div>
+    </div>
+
     <div id="<?= $uid ?>" class="dropzone"></div>
     <input type="hidden" name="<?= $this->field('value') ?>" id="session-key-<?= $uid ?>">
     <input type="hidden" name="<?= $this->field('fsID') ?>" value="<?= $fsID ?>">
@@ -22,6 +26,7 @@
         $("#<?=$uid?>").dropzone(
             {
                 uploadMultiple: true,
+                previewsContainer: '#preview',
                 url: '<?=View::url('/attribute_multi_file/upload/')?>',
                 acceptedFiles: <?=json_encode($typeValues['fileTypes'])?>,
                 success: function (file, response) {
