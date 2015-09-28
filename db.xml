@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<schema version="0.3">
+    <table name="atMultiFileSettings">
+        <field name="akID" type="I">
+            <key/>
+            <default value="0"/>
+            <unsigned/>
+        </field>
+        <field name="fileTypes" type="C" size="255"></field>
+    </table>
+    <table name="atMultiFile">
+        <field name="avID" type="I">
+            <key/>
+            <default value="0"/>
+            <unsigned/>
+        </field>
+        <field name="fsID" type="I"></field>
+    </table>
+</schema>
