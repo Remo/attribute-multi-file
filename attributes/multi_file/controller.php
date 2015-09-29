@@ -25,7 +25,7 @@ class Controller extends AttributeTypeController
         $ak = $this->getAttributeKey();
         $value = [];
         if (is_object($ak)) {
-            $value = $db->GetRow('SELECT fileTypes FROM atMultiFileSettings WHERE akID = ?', [$ak->getAttributeKeyID()]);
+            $value = $db->GetRow('SELECT fileTypes, maximumFiles FROM atMultiFileSettings WHERE akID = ?', [$ak->getAttributeKeyID()]);
         }
         return $value;
     }
@@ -42,10 +42,12 @@ class Controller extends AttributeTypeController
     {
         $typeValues = $this->getTypeValues();
         $this->set('fileTypes', preg_split('[,]', $typeValues['fileTypes']));
+        $this->set('maximumFiles', isset($typeValues['maximumFiles']) ? $typeValues['maximumFiles'] : 100);
         $this->set('availableFileTypes', $this->getFileTypes());
     }
 
-    protected function getFileTypes() {
+    protected function getFileTypes()
+    {
         $mimeTypes = \Concrete\Core\File\Service\Mime::$mime_types_and_extensions;
         $fileTypes = [];
 
@@ -68,6 +70,7 @@ class Controller extends AttributeTypeController
         $db->Replace('atMultiFileSettings', [
             'akID' => $ak->getAttributeKeyID(),
             'fileTypes' => join(',', $data['fileTypes']),
+            'maximumFiles' =>  $data['maximumFiles'],
         ], ['akID'], true);
     }
 
@@ -89,7 +92,8 @@ class Controller extends AttributeTypeController
      * saved yet.
      * @return int
      */
-    protected function getFileSetID() {
+    protected function getFileSetID()
+    {
         $db = Database::connection();
         $fsID = $db->GetOne('SELECT fsID FROM atMultiFile WHERE avID = ?', [$this->getAttributeValueID()]);
         return $fsID;
@@ -99,7 +103,8 @@ class Controller extends AttributeTypeController
      * Returns a list of files connected to the current attribute instance
      * @return array
      */
-    protected function getFiles() {
+    protected function getFiles()
+    {
         $fsID = $this->getFileSetID();
         $files = FileSet::getFilesBySetID($fsID);
         return $files ?: [];
@@ -144,7 +149,7 @@ class Controller extends AttributeTypeController
         // Update sort order of files
         if (isset($data['sortOrder']) && !empty($data['sortOrder'])) {
             $sortOrder = $data['sortOrder'];
-            parse_str ($sortOrder, $sortOrderArray);
+            parse_str($sortOrder, $sortOrderArray);
 
             $fileSet->updateFileSetDisplayOrder($sortOrderArray['file']);
         }

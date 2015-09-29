@@ -10,4 +10,6 @@
         </label>
     <?php } ?>
 
+    <legend><?= t('Maximum Number of Files') ?></legend>
+    <input type="text" name="maximumFiles" value="<?= $maximumFiles ?>">
 </fieldset>
