@@ -9,7 +9,6 @@ class Uploader extends Controller
     public function upload()
     {
         $fh = Loader::helper('file');
-        $files = [];
         $tempKey = uniqid();
         $_SESSION['multi_file'][$tempKey] = [];
         foreach ($_FILES['file']['tmp_name'] as $key => $uploadedFile) {

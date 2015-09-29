@@ -1,4 +1,5 @@
 .multi-file .file {
+  position: relative;
   float: left;
   width: 120px;
   height: 120px;
@@ -16,6 +17,16 @@
 }
 .multi-file .file .file-name:hover {
   overflow: visible;
+}
+.multi-file .file:hover .remove-file {
+  display: block;
+}
+.multi-file .file .remove-file {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  display: none;
+  cursor: pointer;
 }
 .multi-file .dropzone {
   float: left;

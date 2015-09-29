@@ -2,9 +2,8 @@
 
 namespace Concrete\Package\AttributeMultiFile\Attribute\MultiFile;
 
-use Database,
-    Loader,
-    Core,
+use Concrete\Core\File\File,
+    Database,
     View,
     Concrete\Core\File\Version,
     \Concrete\Core\Attribute\Controller as AttributeTypeController,
@@ -152,6 +151,15 @@ class Controller extends AttributeTypeController
             parse_str($sortOrder, $sortOrderArray);
 
             $fileSet->updateFileSetDisplayOrder($sortOrderArray['file']);
+        }
+
+        // Remove files
+        if (isset($data['removeFiles']) && !empty($data['removeFiles'])) {
+            $removeFiles = preg_split('[,]', $data['removeFiles'], -1, PREG_SPLIT_NO_EMPTY);
+            foreach ($removeFiles as $fID) {
+                $file = File::getByID($fID);
+                $file->delete();
+            }
         }
 
         // Import files
