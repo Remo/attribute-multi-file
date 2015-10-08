@@ -30,34 +30,36 @@ $uid = 'dropzone' . uniqid();
     <div class="clearfix"></div>
 
     <script type="text/javascript">
-        $("#<?=$uid?>").dropzone(
-            {
-                init: function () {
-                    <?=$uid?> = this;
-                },
-                uploadMultiple: true,
-                previewsContainer: '#preview',
-                url: '<?=View::url('/attribute_multi_file/upload/')?>',
-                acceptedFiles: <?=json_encode($typeValues['fileTypes'])?>,
-                maxFiles: <?=$typeValues['maximumFiles'] - count($files) ?>,
-                success: function (file, response) {
-                    $("#session-key-<?=$uid?>").val(response);
+        $(document).ready(function() {
+            $("#<?=$uid?>").dropzone(
+                {
+                    init: function () {
+                        <?=$uid?> = this;
+                    },
+                    uploadMultiple: true,
+                    previewsContainer: '#preview',
+                    url: '<?=View::url('/attribute_multi_file/upload/')?>',
+                    acceptedFiles: <?=json_encode($typeValues['fileTypes'])?>,
+                    maxFiles: <?=$typeValues['maximumFiles'] - count($files) ?>,
+                    success: function (file, response) {
+                        $("#session-key-<?=$uid?>").val(response);
+                    }
                 }
-            }
-        );
+            );
 
-        $("#dropzone-container-<?=$uid?>").on("click", ".remove-file", function() {
-            var $file = $(this).parent(".file");
-            $("#remove-files-<?= $uid ?>").val($("#remove-files-<?= $uid ?>").val() + $file.data("id") + ",");
-            $file.remove();
-            <?=$uid?>.options.maxFiles = <?=$typeValues['maximumFiles']?> - $("#dropzone-container-<?=$uid?>").find(".file").length;
-        });
+            $("#dropzone-container-<?=$uid?>").on("click", ".remove-file", function() {
+                var $file = $(this).parent(".file");
+                $("#remove-files-<?= $uid ?>").val($("#remove-files-<?= $uid ?>").val() + $file.data("id") + ",");
+                $file.remove();
+                <?=$uid?>.options.maxFiles = <?=$typeValues['maximumFiles']?> - $("#dropzone-container-<?=$uid?>").find(".file").length;
+            });
 
-        $fileContainer = $("#<?=$uid?>").parent().find(".file-list");
-        $fileContainer.sortable();
-        $fileContainer.on("sortupdate", function () {
-            var data = $(this).sortable('serialize');
-            $("#file-sort-<?=$uid?>").val(data);
+            $fileContainer = $("#<?=$uid?>").parent().find(".file-list");
+            $fileContainer.sortable();
+            $fileContainer.on("sortupdate", function () {
+                var data = $(this).sortable('serialize');
+                $("#file-sort-<?=$uid?>").val(data);
+            });
         });
     </script>
 </div>
