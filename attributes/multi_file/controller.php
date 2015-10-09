@@ -68,7 +68,7 @@ class Controller extends AttributeTypeController
 
         $db->Replace('atMultiFileSettings', [
             'akID' => $ak->getAttributeKeyID(),
-            'fileTypes' => join(',', $data['fileTypes']),
+            'fileTypes' => is_array($data['fileTypes']) ? join(',', $data['fileTypes']) : '',
             'maximumFiles' =>  $data['maximumFiles'],
         ], ['akID'], true);
     }
@@ -193,6 +193,22 @@ class Controller extends AttributeTypeController
     public function composer()
     {
         $this->form();
+    }
+
+    public function deleteKey()
+    {
+        $db = Database::connection();
+        $arr = $this->attributeKey->getAttributeValueIDList();
+        foreach ($arr as $id) {
+            $db->Execute('DELETE FROM atMultiFile WHERE avID = ?', [$id]);
+        }
+        $db->Execute('delete from atSelectOptions where akID = ?', array($this->attributeKey->getAttributeKeyID()));
+    }
+
+    public function deleteValue()
+    {
+        $db = Database::connection();
+        $db->Execute('DELETE FROM atMultiFile WHERE avID = ?', [$this->getAttributeValueID()]);
     }
 
 }
