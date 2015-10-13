@@ -22,7 +22,7 @@ $uid = 'dropzone' . uniqid();
     </div>
 
     <div id="<?= $uid ?>" class="dropzone<?= count($files) >= $typeValues['maximumFiles'] ? ' hidden' : '' ?>"></div>
-    <input type="hidden" name="<?= $this->field('value') ?>" id="session-key-<?= $uid ?>">
+    <input type="hidden" name="<?= $this->field('value') ?>" value="<?= uniqid() ?>" id="session-key-<?= $uid ?>">
     <input type="hidden" name="<?= $this->field('fsID') ?>" value="<?= $fsID ?>">
     <input type="hidden" name="<?= $this->field('sortOrder') ?>" id="file-sort-<?= $uid ?>" value="">
     <input type="hidden" name="<?= $this->field('removeFiles') ?>" id="remove-files-<?= $uid ?>" value="">
@@ -38,12 +38,9 @@ $uid = 'dropzone' . uniqid();
                     },
                     uploadMultiple: true,
                     previewsContainer: '#preview',
-                    url: '<?=View::url('/attribute_multi_file/upload/')?>',
+                    url: '<?=View::url('/attribute_multi_file/upload/')?>/' + $("#session-key-<?= $uid ?>").val(),
                     acceptedFiles: <?=json_encode($typeValues['fileTypes'])?>,
-                    maxFiles: <?=$typeValues['maximumFiles'] - count($files) ?>,
-                    success: function (file, response) {
-                        $("#session-key-<?=$uid?>").val(response);
-                    }
+                    maxFiles: <?=$typeValues['maximumFiles'] - count($files) ?>
                 }
             );
 

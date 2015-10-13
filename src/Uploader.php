@@ -6,11 +6,12 @@ use Controller,
 
 class Uploader extends Controller
 {
-    public function upload()
+    public function upload($tempKey)
     {
         $fh = Loader::helper('file');
-        $tempKey = uniqid();
-        $_SESSION['multi_file'][$tempKey] = [];
+        if (!isset($_SESSION['multi_file'][$tempKey])) {
+            $_SESSION['multi_file'][$tempKey] = [];
+        }
         foreach ($_FILES['file']['tmp_name'] as $key => $uploadedFile) {
             $name = $_FILES['file']['name'][$key];
             $tmpName = tempnam($fh->getTemporaryDirectory(), 'img');
@@ -19,6 +20,5 @@ class Uploader extends Controller
                 $_SESSION['multi_file'][$tempKey][] = ['fileName' => $tmpName, 'name' => $name];
             }
         }
-        echo $tempKey;
     }
 }

@@ -158,7 +158,9 @@ class Controller extends AttributeTypeController
             $removeFiles = preg_split('[,]', $data['removeFiles'], -1, PREG_SPLIT_NO_EMPTY);
             foreach ($removeFiles as $fID) {
                 $file = File::getByID($fID);
-                $file->delete();
+                if (!is_null($file)) {
+                    $file->delete();
+                }
             }
         }
 

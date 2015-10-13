@@ -63,6 +63,6 @@ class Controller extends Package
             ['css', 'multifile'],
         ]);
 
-        Route::register('/attribute_multi_file/upload', '\Concrete\Package\AttributeMultiFile\Src\Uploader::upload');
+        Route::register('/attribute_multi_file/upload/{tempKey}', '\Concrete\Package\AttributeMultiFile\Src\Uploader::upload');
     }
 }
