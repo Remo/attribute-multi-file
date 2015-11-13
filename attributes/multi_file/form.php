@@ -18,7 +18,7 @@ $uid = 'dropzone' . uniqid();
     </div>
 
     <div class="dropzone">
-        <div id="preview" class="dropzone-previews"></div>
+        <div id="preview-<?=$uid?>" class="dropzone-previews"></div>
     </div>
 
     <div id="<?= $uid ?>" class="dropzone<?= count($files) >= $typeValues['maximumFiles'] ? ' hidden' : '' ?>"></div>
@@ -37,7 +37,7 @@ $uid = 'dropzone' . uniqid();
                         <?=$uid?> = this;
                     },
                     uploadMultiple: true,
-                    previewsContainer: '#preview',
+                    previewsContainer: '#preview-<?=$uid?>',
                     url: '<?=View::url('/attribute_multi_file/upload/')?>/' + $("#session-key-<?= $uid ?>").val(),
                     acceptedFiles: <?=json_encode($typeValues['fileTypes'])?>,
                     maxFiles: <?=$typeValues['maximumFiles'] - count($files) ?>
