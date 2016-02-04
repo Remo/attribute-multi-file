@@ -131,7 +131,7 @@ class Controller extends AttributeTypeController
         // create or get file set
         $fileSetName = sprintf('Multi File %s', date('Y-m-d'));
         $fileSet = FileSet::getByID($data['fsID']);
-        if (!$fileSet->getFileSetID()) {
+        if ($fileSet == null) {
             $fileSet = FileSet::add($fileSetName);
         }
 
