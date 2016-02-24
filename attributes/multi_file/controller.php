@@ -106,7 +106,17 @@ class Controller extends AttributeTypeController
     {
         $fsID = $this->getFileSetID();
         $files = FileSet::getFilesBySetID($fsID);
-        return $files ?: [];
+        $listFiles = '';
+        if (is_array($files)) {
+            foreach ($files as $key => $item) {
+                if($item instanceof File) {
+                    $listFiles .= '<a href="'.$item->getDownloadURL().'">'.$item->getFileName().'</a> <br>';
+                }
+            }
+            return $listFiles;
+        }else{
+            return $files ?: [];
+        }
     }
 
     /**
