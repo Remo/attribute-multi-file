@@ -106,6 +106,17 @@ class Controller extends AttributeTypeController
     {
         $fsID = $this->getFileSetID();
         $files = FileSet::getFilesBySetID($fsID);
+        return $files ?: [];
+    }
+
+    /**
+     * Returns a list of files connected to the current attribute instance as string
+     * @return string
+     */
+    public function getDisplayValue()
+    {
+        $fsID = $this->getFileSetID();
+        $files = FileSet::getFilesBySetID($fsID);
         $listFiles = '';
         if (is_array($files)) {
             foreach ($files as $key => $item) {
@@ -113,10 +124,8 @@ class Controller extends AttributeTypeController
                     $listFiles .= '<a href="'.$item->getDownloadURL().'">'.$item->getFileName().'</a> <br>';
                 }
             }
-            return $listFiles;
-        }else{
-            return $files ?: [];
         }
+        return $listFiles;
     }
 
     /**
