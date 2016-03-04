@@ -18,9 +18,7 @@ $uid = 'dropzone' . uniqid();
             <?php } ?>
         </div>
 
-<!--        <div class="dropzone">-->
-            <div id="preview-<?=$uid?>" class="dropzone-previews"></div>
-<!--        </div>-->
+        <div id="preview-<?=$uid?>" class="dropzone-previews"></div>
 
         <div class="<?= count($files) >= $typeValues['maximumFiles'] ? ' hidden' : '' ?>"></div>
     </div>
