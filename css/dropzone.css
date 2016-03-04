@@ -390,3 +390,6 @@
 .dropzone-previews{
     display: inline-block;
 }
+.dz-max-files-reached{
+    pointer-events: none;
+}
