@@ -3,25 +3,25 @@ defined('C5_EXECUTE') or die('Access Denied.');
 $uid = 'dropzone' . uniqid();
 ?>
 <div class="multi-file" id="dropzone-container-<?= $uid ?>">
-    <div class="file-list">
-        <?php foreach ($files as $file) { ?>
-            <div class="file" id="file_<?= $file->getFileID() ?>" data-id="<?= $file->getFileID() ?>">
-                <?= $file->getListingThumbnailImage() ?>
-                <div class="file-name">
-                    <?= $file->getFileName() ?>
+    <div id="<?= $uid ?>" class="dropzone">
+        <div class="file-list">
+            <?php foreach ($files as $file) { ?>
+                <div class="file" id="file_<?= $file->getFileID() ?>" data-id="<?= $file->getFileID() ?>">
+                    <?= $file->getListingThumbnailImage() ?>
+                    <div class="file-name">
+                        <?= $file->getFileName() ?>
+                    </div>
+                    <div class="remove-file">
+                        <i class="fa fa-times"></i>
+                    </div>
                 </div>
-                <div class="remove-file">
-                    <i class="fa fa-times"></i>
-                </div>
-            </div>
-        <?php } ?>
-    </div>
+            <?php } ?>
+        </div>
 
-    <div class="dropzone">
         <div id="preview-<?=$uid?>" class="dropzone-previews"></div>
-    </div>
 
-    <div id="<?= $uid ?>" class="dropzone<?= count($files) >= $typeValues['maximumFiles'] ? ' hidden' : '' ?>"></div>
+        <div class="<?= count($files) >= $typeValues['maximumFiles'] ? ' hidden' : '' ?>"></div>
+    </div>
     <input type="hidden" name="<?= $this->field('value') ?>" value="<?= uniqid() ?>" id="session-key-<?= $uid ?>">
     <input type="hidden" name="<?= $this->field('fsID') ?>" value="<?= $fsID ?>">
     <input type="hidden" name="<?= $this->field('sortOrder') ?>" id="file-sort-<?= $uid ?>" value="">
