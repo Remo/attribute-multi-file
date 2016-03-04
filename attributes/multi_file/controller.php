@@ -110,6 +110,25 @@ class Controller extends AttributeTypeController
     }
 
     /**
+     * Returns a list of files connected to the current attribute instance as string
+     * @return string
+     */
+    public function getDisplayValue()
+    {
+        $fsID = $this->getFileSetID();
+        $files = FileSet::getFilesBySetID($fsID);
+        $listFiles = '';
+        if (is_array($files)) {
+            foreach ($files as $key => $item) {
+                if($item instanceof File) {
+                    $listFiles .= '<a href="'.$item->getDownloadURL().'">'.$item->getFileName().'</a> <br>';
+                }
+            }
+        }
+        return $listFiles;
+    }
+
+    /**
      * Called when we're searching using an attribute.
      * @param $list
      */
