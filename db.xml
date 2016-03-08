@@ -8,6 +8,7 @@
         </field>
         <field name="fileTypes" type="C" size="255"></field>
         <field name="maximumFiles" type="I"></field>
+        <field name="linkType" type="I"><default value="0"/></field>
     </table>
     <table name="atMultiFile">
         <field name="avID" type="I">

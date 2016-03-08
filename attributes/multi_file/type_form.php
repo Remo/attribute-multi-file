@@ -12,4 +12,7 @@
 
     <legend><?= t('Maximum Number of Files') ?></legend>
     <input type="text" name="maximumFiles" value="<?= $maximumFiles ?>">
+    
+    <legend><?= t('Downloadable Link') ?></legend>
+    <input type="checkbox" name="linkType" value="1" <?= $linkType == 1 ? 'checked' : ''?>>
 </fieldset>

@@ -23,6 +23,7 @@ $uid = 'dropzone' . uniqid();
         <div class="<?= count($files) >= $typeValues['maximumFiles'] ? ' hidden' : '' ?>"></div>
     </div>
     <input type="hidden" name="<?= $this->field('value') ?>" value="<?= uniqid() ?>" id="session-key-<?= $uid ?>">
+    <input type="hidden" name="linkType" value="<?= $typeValues['linkType'] ?>" id="linkType<?= $uid ?>">
     <input type="hidden" name="<?= $this->field('fsID') ?>" value="<?= $fsID ?>">
     <input type="hidden" name="<?= $this->field('sortOrder') ?>" id="file-sort-<?= $uid ?>" value="">
     <input type="hidden" name="<?= $this->field('removeFiles') ?>" id="remove-files-<?= $uid ?>" value="">
@@ -31,6 +32,7 @@ $uid = 'dropzone' . uniqid();
 
     <script type="text/javascript">
         $(document).ready(function() {
+            Dropzone.autoDiscover = false;
             $("#<?=$uid?>").dropzone(
                 {
                     init: function () {
