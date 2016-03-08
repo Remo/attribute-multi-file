@@ -127,7 +127,7 @@ class Controller extends AttributeTypeController
                     if($linkType == 1) {
                         $listFiles .= '<a href="' . $item->getDownloadURL() . '">' . $item->getFileName() . '</a> <br>';
                     }else{
-                        $listFiles .= '<a href="' . $item->getRelativePath() . '">' . $item->getFileName() . '</a> <br>';
+                        $listFiles .= '<a href="' . $_SERVER['HTTP_HOST'].$item->getRelativePath() . '">' . $item->getFileName() . '</a> <br>';
                     }
                 }
             }
