@@ -24,7 +24,7 @@ class Controller extends AttributeTypeController
         $ak = $this->getAttributeKey();
         $value = [];
         if (is_object($ak)) {
-            $value = $db->GetRow('SELECT fileTypes, maximumFiles FROM atMultiFileSettings WHERE akID = ?', [$ak->getAttributeKeyID()]);
+            $value = $db->GetRow('SELECT fileTypes, maximumFiles,linkType FROM atMultiFileSettings WHERE akID = ?', [$ak->getAttributeKeyID()]);
         }
         return $value;
     }
@@ -43,6 +43,7 @@ class Controller extends AttributeTypeController
         $this->set('fileTypes', preg_split('[,]', $typeValues['fileTypes']));
         $this->set('maximumFiles', isset($typeValues['maximumFiles']) ? $typeValues['maximumFiles'] : 100);
         $this->set('availableFileTypes', $this->getFileTypes());
+        $this->set('linkType', isset($typeValues['linkType']) ? $typeValues['linkType'] : 0);
     }
 
     protected function getFileTypes()
@@ -70,6 +71,7 @@ class Controller extends AttributeTypeController
             'akID' => $ak->getAttributeKeyID(),
             'fileTypes' => is_array($data['fileTypes']) ? join(',', $data['fileTypes']) : '',
             'maximumFiles' =>  $data['maximumFiles'],
+            'linkType' =>  $data['linkType'],
         ], ['akID'], true);
     }
 
@@ -115,13 +117,18 @@ class Controller extends AttributeTypeController
      */
     public function getDisplayValue()
     {
+        $linkType = $_POST['linkType'];
         $fsID = $this->getFileSetID();
         $files = FileSet::getFilesBySetID($fsID);
         $listFiles = '';
         if (is_array($files)) {
             foreach ($files as $key => $item) {
                 if($item instanceof File) {
-                    $listFiles .= '<a href="'.$item->getDownloadURL().'">'.$item->getFileName().'</a> <br>';
+                    if($linkType == 1) {
+                        $listFiles .= '<a href="' . $item->getDownloadURL() . '">' . $item->getFileName() . '</a> <br>';
+                    }else{
+                        $listFiles .= '<a href="' . $item->getRelativePath() . '">' . $item->getFileName() . '</a> <br>';
+                    }
                 }
             }
         }
