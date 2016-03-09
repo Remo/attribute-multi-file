@@ -31,6 +31,7 @@ $uid = 'dropzone' . uniqid();
 
     <script type="text/javascript">
         $(document).ready(function() {
+            Dropzone.autoDiscover = false;
             $("#<?=$uid?>").dropzone(
                 {
                     init: function () {
