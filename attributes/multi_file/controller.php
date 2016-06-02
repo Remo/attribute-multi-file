@@ -12,6 +12,7 @@ use Concrete\Core\File\File,
 
 class Controller extends AttributeTypeController
 {
+    protected $searchIndexFieldDefinition = array('type' => 'text', 'options' => array('notnull' => false));
     public $helpers = ['form'];
 
     /**
