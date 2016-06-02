@@ -227,6 +227,31 @@ class Controller extends AttributeTypeController
         unset($_SESSION['multi_file'][$sessionKey]);
     }
 
+
+    /**
+     * Called when export content
+     */
+    public function exportKey($akey)
+    {
+        $this->type_form();
+        $akey->addAttribute('fileTypes', implode(',',$this->get('fileTypes')));
+        $akey->addAttribute('maximumFiles', $this->get('maximumFiles'));
+        $akey->addAttribute('fileLinkType', $this->get('fileLinkType'));
+        return $akey;
+    }
+
+    /**
+     * Called when import content
+     */
+    public function importKey($akey)
+    {
+        $data = [];
+        $data['fileTypes'] = array($akey['fileTypes']);
+        $data['maximumFiles'] = $akey['maximumFiles'];
+        $data['fileLinkType'] = $akey['fileLinkType'];
+        $this->saveKey($data);
+    }
+
     /**
      * Called when the attribute is edited in the composer.
      */
