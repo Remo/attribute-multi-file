@@ -8,6 +8,8 @@
         </field>
         <field name="fileTypes" type="C" size="255"></field>
         <field name="maximumFiles" type="I"></field>
+        <field name="maximumWidth" type="I"></field>
+        <field name="maximumHeight" type="I"></field>
         <field name="fileLinkType" type="I"><default value="0"/></field>
     </table>
     <table name="atMultiFile">

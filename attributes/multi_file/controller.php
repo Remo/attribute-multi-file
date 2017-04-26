@@ -25,7 +25,7 @@ class Controller extends AttributeTypeController
         $ak = $this->getAttributeKey();
         $value = [];
         if (is_object($ak)) {
-            $value = $db->GetRow('SELECT fileTypes, maximumFiles, fileLinkType FROM atMultiFileSettings WHERE akID = ?', [$ak->getAttributeKeyID()]);
+            $value = $db->GetRow('SELECT fileTypes, maximumFiles,maximumHeight,maximumWidth, fileLinkType FROM atMultiFileSettings WHERE akID = ?', [$ak->getAttributeKeyID()]);
         }
         return $value;
     }
@@ -43,6 +43,8 @@ class Controller extends AttributeTypeController
         $typeValues = $this->getTypeValues();
         $this->set('fileTypes', preg_split('[,]', $typeValues['fileTypes']));
         $this->set('maximumFiles', isset($typeValues['maximumFiles']) ? $typeValues['maximumFiles'] : 100);
+        $this->set('maximumWidth', isset($typeValues['maximumWidth']) ? $typeValues['maximumWidth'] : 0);
+        $this->set('maximumHeight', isset($typeValues['maximumHeight']) ? $typeValues['maximumHeight'] : 0);
         $this->set('availableFileTypes', $this->getFileTypes());
         $this->set('fileLinkType', isset($typeValues['fileLinkType']) ? $typeValues['fileLinkType'] : 0);
     }
@@ -72,6 +74,8 @@ class Controller extends AttributeTypeController
             'akID' => $ak->getAttributeKeyID(),
             'fileTypes' => is_array($data['fileTypes']) ? join(',', $data['fileTypes']) : '',
             'maximumFiles' =>  $data['maximumFiles'],
+            'maximumWidth' =>  $data['maximumWidth'],
+            'maximumHeight' =>  $data['maximumHeight'],
             'fileLinkType' =>  $data['fileLinkType'],
         ], ['akID'], true);
     }
@@ -237,6 +241,8 @@ class Controller extends AttributeTypeController
         $this->type_form();
         $akey->addAttribute('fileTypes', implode(',',$this->get('fileTypes')));
         $akey->addAttribute('maximumFiles', $this->get('maximumFiles'));
+        $akey->addAttribute('maximumWidth', $this->get('maximumWidth'));
+        $akey->addAttribute('maximumHeight', $this->get('maximumHeight'));
         $akey->addAttribute('fileLinkType', $this->get('fileLinkType'));
         return $akey;
     }
@@ -249,6 +255,8 @@ class Controller extends AttributeTypeController
         $data = [];
         $data['fileTypes'] = array($akey['fileTypes']);
         $data['maximumFiles'] = $akey['maximumFiles'];
+        $data['maximumWidth'] = $akey['maximumWidth'];
+        $data['maximumHeight'] = $akey['maximumHeight'];
         $data['fileLinkType'] = $akey['fileLinkType'];
         $this->saveKey($data);
     }
