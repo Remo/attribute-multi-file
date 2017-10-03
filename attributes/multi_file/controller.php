@@ -36,6 +36,14 @@ class Controller extends AttributeTypeController
     }
 
     /**
+     * Searching for a multi file associated object through a discrete value won't work, disable it.
+     */
+    public function getSearchIndexValue()
+    {
+        return '';
+    }
+
+    /**
      * Shows the attribute configuration form
      */
     public function type_form()
