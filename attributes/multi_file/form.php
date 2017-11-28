@@ -31,11 +31,46 @@ $uid = 'dropzone' . uniqid();
 
     <script type="text/javascript">
         $(document).ready(function() {
+            var maxImageWidth = 0,
+                maxImageHeight = 0;
+            <?php if(isset($typeValues['maximumWidth']) && $typeValues['maximumWidth'] > 0){ ?>
+                maxImageWidth = <?=$typeValues['maximumWidth']; ?>;
+            <?php }
+            if(isset($typeValues['maximumHeight']) && $typeValues['maximumHeight'] > 0){
+            ?>
+                maxImageHeight = <?=$typeValues['maximumHeight']; ?>;
+            <?php } ?>
             Dropzone.autoDiscover = false;
             $("#<?=$uid?>").dropzone(
                 {
                     init: function () {
                         <?=$uid?> = this;
+                    },
+                    accept: function(file, done) {
+                        var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg"],
+                            fileType = file.type;
+                        if ($.inArray(fileType, ValidImageTypes) > 0) {
+                            var pixels = 0;
+                            var reader = new FileReader();
+                            reader.onload = (function (file) {
+                                var fileType = file.type,
+                                    fileWidth = file.width,
+                                    fileHeight = file.height;
+
+                                var image = new Image();
+                                image.src = file.target.result;
+                                image.onload = function () {
+                                    if ((maxImageWidth > 0 && this.width > maxImageWidth) || (maxImageHeight > 0 && this.height > maxImageHeight)) {
+                                            done("Image dimension should be " + maxImageWidth + " X " + maxImageHeight + ".");
+                                    } else {
+                                        done();
+                                    }
+                                };
+                            });
+                            reader.readAsDataURL(file);
+                        }else{
+                            done();
+                        }
                     },
                     uploadMultiple: true,
                     previewsContainer: '#preview-<?=$uid?>',

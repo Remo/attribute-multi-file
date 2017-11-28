@@ -11,7 +11,7 @@ class Controller extends Package
 {
     protected $pkgHandle = 'attribute_multi_file';
     protected $appVersionRequired = '5.7.5';
-    protected $pkgVersion = '0.9.3';
+    protected $pkgVersion = '0.9.4';
 
     public function getPackageName()
     {
